@@ -1,0 +1,22 @@
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Compiled files
+*.class
+*.jar
+*.war
+*.ear
+
+# Build directories
+out/
+build/
+target/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
