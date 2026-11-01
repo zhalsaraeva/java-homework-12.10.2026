@@ -1,3 +1,4 @@
+// Домашнее задание от 12.10.2026
 public class Main {
     public static void main(String[] args) {
         System.out.println("=== Демонстрация работы BankAccount ===\n");
