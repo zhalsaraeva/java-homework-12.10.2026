@@ -52,35 +52,35 @@ public final class BankAccount {
     }
 
     public void transfer(BankAccount target, Balance amount) {
-
-        if (target == null) {
-            throw new IllegalArgumentException("Целевой счёт не может быть null");
-        }
-        if (amount == null) {
-            throw new IllegalArgumentException("Сумма перевода не может быть null");
-        }
-        if (amount.getAmount() <= 0) {
-            throw new IllegalArgumentException("Сумма перевода должна быть больше нуля");
-        }
-        if (!this.isActive) {
-            throw new IllegalStateException("Счёт не активен");
-        }
-        if (this == target) {
-            throw new IllegalArgumentException("Нельзя перевести деньги на тот же счёт");
-        }
-
-        long amountInRublesKopecks = calculateAmountInRublesKopecks(amount);
-        if (this.withdrawnToday + amountInRublesKopecks > this.dailyLimit) {
-            throw new IllegalStateException("Превышен дневной лимит операций");
-        }
-
-        this.balance = this.balance.subtract(amount);
- 
-        target.balance = target.balance.add(amount);
-
-        this.withdrawnToday += amountInRublesKopecks;
+    if (target == null) {
+        throw new IllegalArgumentException("Целевой счёт не может быть null");
+    }
+    if (amount == null) {
+        throw new IllegalArgumentException("Сумма перевода не может быть null");
+    }
+    if (amount.getAmount() <= 0) {
+        throw new IllegalArgumentException("Сумма перевода должна быть больше нуля");
+    }
+    if (!this.isActive) {
+        throw new IllegalStateException("Счёт не активен");
+    }
+    if (this == target) {
+        throw new IllegalArgumentException("Нельзя перевести деньги на тот же счёт");
     }
 
+    long amountInRublesKopecks = calculateAmountInRublesKopecks(amount);
+    if (this.withdrawnToday + amountInRublesKopecks > this.dailyLimit) {
+        throw new IllegalStateException("Превышен дневной лимит операций");
+    }
+
+    Balance newSourceBalance = this.balance.subtract(amount);
+    Balance newTargetBalance = target.balance.add(amount);
+
+    this.balance = newSourceBalance;
+    target.balance = newTargetBalance;
+
+    this.withdrawnToday += amountInRublesKopecks;
+}
 
     private long calculateAmountInRublesKopecks(Balance amount) {
         return (amount.getAmount() * amount.getCurrency().getPriceInRublesKopecks()) / 100;
